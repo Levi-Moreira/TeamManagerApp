@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.levimoreira.teammenagerapp.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home"></fragment>
+    <fragment
+        android:id="@+id/organizationAddFragment"
+        android:name="com.levimoreira.teammenagerapp.organization.views.OrganizationAddFragment"
+        android:label="@string/add_organization"
+        tools:layout="@layout/fragment_add_organization" />
+    <fragment
+        android:id="@+id/businessAddFragment"
+        android:name="com.levimoreira.teammenagerapp.business.views.BusinessAddFragment"
+        android:label="@string/add_business" />
+    <fragment
+        android:id="@+id/navigation_organization"
+        android:name="com.levimoreira.teammenagerapp.organization.views.OrganizationListFragment"
+        android:label="@string/title_organization"
+        tools:layout="@layout/fragment_organization">
+        <action
+            android:id="@+id/action_organizationListFragment_to_organizationAddFragment"
+            app:destination="@id/organizationAddFragment"
+            app:enterAnim="@anim/enter_from_bottom"
+            app:exitAnim="@anim/exit_from_top"
+            app:popUpTo="@+id/navigation_organization" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_business"
+        android:name="com.levimoreira.teammenagerapp.business.views.BusinessListFragment"
+        android:label="@string/title_business">
+        <action
+            android:id="@+id/action_businessListFragment_to_businessAddFragment"
+            app:destination="@id/businessAddFragment"
+            app:enterAnim="@anim/enter_from_bottom"
+            app:exitAnim="@anim/exit_from_top"
+            app:popUpTo="@+id/navigation_business" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_people"
+        android:name="com.levimoreira.teammenagerapp.person.view.PersonListFragment"
+        android:label="@string/title_people">
+        <action
+            android:id="@+id/action_personListFragment_to_personAddFragment"
+            app:destination="@id/personAddFragment"
+            app:enterAnim="@anim/enter_from_bottom"
+            app:exitAnim="@anim/exit_from_top"
+            app:popUpTo="@+id/navigation_people" />
+    </fragment>
+    <fragment
+        android:id="@+id/personAddFragment"
+        android:name="com.levimoreira.teammenagerapp.person.view.PersonAddFragment"
+        android:label="@string/add_person" />
+    <fragment
+        android:id="@+id/navigation_tasks"
+        android:name="com.levimoreira.teammenagerapp.task.TasksFragment"
+        android:label="@string/title_tasks"
+        tools:layout="@layout/fragment_tasks" />
+</navigation>

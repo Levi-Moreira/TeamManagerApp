@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_people"
+        android:icon="@drawable/ic_group"
+        android:title="@string/title_people" />
+
+    <item
+        android:id="@+id/navigation_organization"
+        android:icon="@drawable/ic_organization"
+        android:title="@string/title_organization" />
+
+    <item
+        android:id="@+id/navigation_business"
+        android:icon="@drawable/ic_business"
+        android:title="@string/title_business" />
+
+    <item
+        android:id="@+id/navigation_tasks"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/title_tasks" />
+
+</menu>

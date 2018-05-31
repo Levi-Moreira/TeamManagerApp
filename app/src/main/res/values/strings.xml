@@ -1,0 +1,30 @@
+<resources>
+
+    <!--App Name-->
+    <string name="app_name">Team Menager App</string>
+
+    <!--Main Activity-->
+    <string name="title_home">Home</string>
+    <string name="title_people">Pessoas</string>
+    <string name="title_organization">Organizações</string>
+    <string name="title_tasks">Tarefas</string>
+    <string name="title_business">Negócios</string>
+
+    <!--Add Person Fragment-->
+    <string name="text_hint_name">Nome</string>
+    <string name="text_hint_email">Email</string>
+    <string name="text_hint_phone">Telefone</string>
+    <string name="add_person">Adicionar pessoa</string>
+    <string name="hello_blank_fragment">placeholder</string>
+    <string name="add_organization">Adicionar Organização</string>
+    <string name="text_hint_address">Endereço</string>
+    <string name="text_hint_title">Título</string>
+    <string name="text_hint_description">Descrição</string>
+    <string name="text_hint_value">Valor</string>
+    <string name="text_hint_deadline">Prazo</string>
+    <string name="text_hint_state">Estado</string>
+    <string name="add_business">Adicionar Negócio</string>
+    <string name="person_created">Pessoa criada com sucesso</string>
+    <string name="organization_created">Organização Criada</string>
+    <string name="business_created">Negócio Criado</string>
+</resources>
