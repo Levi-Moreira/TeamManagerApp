@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/businessAddFragment"
         android:name="com.levimoreira.teammenagerapp.business.views.BusinessAddFragment"
-        android:label="@string/add_business" />
+        android:label="@string/add_business" ></fragment>
     <fragment
         android:id="@+id/navigation_organization"
         android:name="com.levimoreira.teammenagerapp.organization.views.OrganizationListFragment"
@@ -28,6 +28,7 @@
             app:destination="@id/organizationAddFragment"
             app:enterAnim="@anim/enter_from_bottom"
             app:exitAnim="@anim/exit_from_top"
+            app:launchSingleTop="false"
             app:popUpTo="@+id/navigation_organization" />
     </fragment>
     <fragment
@@ -40,6 +41,10 @@
             app:enterAnim="@anim/enter_from_bottom"
             app:exitAnim="@anim/exit_from_top"
             app:popUpTo="@+id/navigation_business" />
+        <argument
+            android:name="arg1"
+            android:defaultValue="0"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/navigation_people"

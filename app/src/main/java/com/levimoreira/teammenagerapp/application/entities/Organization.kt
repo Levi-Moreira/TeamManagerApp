@@ -1,8 +1,8 @@
 package com.levimoreira.teammenagerapp.application.entities
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.levimoreira.teammenagerapp.application.entities.Organization.Companion.TABLE_NAME
 
 

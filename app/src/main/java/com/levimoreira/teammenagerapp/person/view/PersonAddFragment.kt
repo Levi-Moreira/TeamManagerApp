@@ -1,20 +1,18 @@
 package com.levimoreira.teammenagerapp.person.view
 
-
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.util.Log
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.levimoreira.teammenagerapp.R
+import com.levimoreira.teammenagerapp.application.entities.Address
 import com.levimoreira.teammenagerapp.application.entities.Person
 import com.levimoreira.teammenagerapp.person.viewmodel.PersonItemViewModel
 import dagger.android.support.DaggerFragment
@@ -34,7 +32,7 @@ class PersonAddFragment : DaggerFragment(), LifecycleOwner {
     lateinit var viewModel: PersonItemViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?): View? {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(PersonItemViewModel::class.java)
         // Inflate the layout for this fragment
@@ -46,9 +44,10 @@ class PersonAddFragment : DaggerFragment(), LifecycleOwner {
 
         createPersonButton.setOnClickListener {
             val person = Person(id = null,
-                    name = inputName.text.toString(),
-                    phone = inputPhone.text.toString(),
-                    email = inputEmail.text.toString())
+                name = inputName.text.toString(),
+                phone = inputPhone.text.toString(),
+                email = inputEmail.text.toString(),
+                address = Address("Ari Maian", "488"))
 
             viewModel.createPerson(person).observe(this, Observer {
                 this.view?.let { view ->
@@ -62,6 +61,4 @@ class PersonAddFragment : DaggerFragment(), LifecycleOwner {
     companion object {
         val TAG = "OrganizationAddFragment"
     }
-
-
 }

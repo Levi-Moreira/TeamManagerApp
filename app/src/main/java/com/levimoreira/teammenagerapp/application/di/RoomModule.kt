@@ -1,7 +1,7 @@
 package com.levimoreira.teammenagerapp.application.di
 
 import android.app.Application
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import com.levimoreira.teammenagerapp.application.data.AppDatabase
 import com.levimoreira.teammenagerapp.business.data.BusinessDao
 import com.levimoreira.teammenagerapp.organization.data.OrganizationDao

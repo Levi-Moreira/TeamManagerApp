@@ -1,15 +1,15 @@
 package com.levimoreira.teammenagerapp.organization.views
 
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.os.ProxyFileDescriptorCallback
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +54,8 @@ class OrganizationListFragment : DaggerFragment(), LifecycleOwner {
             Toast.makeText(this.context, person.name, Toast.LENGTH_SHORT).show()
         }
 
-        organizationRecyclerView.layoutManager = LinearLayoutManager(this.context)
+        organizationRecyclerView.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(this.context)
         organizationRecyclerView.adapter = adapter
 
         addOrganization.setOnClickListener {

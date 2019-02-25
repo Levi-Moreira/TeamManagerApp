@@ -1,6 +1,6 @@
 package com.levimoreira.teammenagerapp.business.adapters
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.levimoreira.teammenagerapp.R
@@ -8,7 +8,7 @@ import com.levimoreira.teammenagerapp.application.entities.Business
 import com.levimoreira.teammenagerapp.inflate
 import kotlinx.android.synthetic.main.business_item_view.view.*
 
-class BusinessListAdapter(private val list: List<Business>) : RecyclerView.Adapter<BusinessListAdapter.BusinessViewHolder>() {
+class BusinessListAdapter(private val list: List<Business>) : androidx.recyclerview.widget.RecyclerView.Adapter<BusinessListAdapter.BusinessViewHolder>() {
     lateinit var clickListener: (Business) -> (Unit)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BusinessViewHolder = BusinessViewHolder(parent.inflate(R.layout.business_item_view))
@@ -21,7 +21,7 @@ class BusinessListAdapter(private val list: List<Business>) : RecyclerView.Adapt
     }
 
 
-    inner class BusinessViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class BusinessViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         fun bind(item: Business, clicklistener: (Business) -> Unit) = with(itemView) {
             title.text = item.title
             description.text = item.description

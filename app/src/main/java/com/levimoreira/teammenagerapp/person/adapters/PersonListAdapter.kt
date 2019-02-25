@@ -1,6 +1,6 @@
 package com.levimoreira.teammenagerapp.person.adapters
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.levimoreira.teammenagerapp.R
@@ -8,7 +8,7 @@ import com.levimoreira.teammenagerapp.application.entities.Person
 import com.levimoreira.teammenagerapp.inflate
 import kotlinx.android.synthetic.main.person_item_view.view.*
 
-class PersonListAdapter(val list: List<Person>) : RecyclerView.Adapter<PersonListAdapter.PersonViewHolder>() {
+class PersonListAdapter(val list: List<Person>) : androidx.recyclerview.widget.RecyclerView.Adapter<PersonListAdapter.PersonViewHolder>() {
 
     lateinit var clickListener: (Person) -> (Unit)
 
@@ -21,7 +21,7 @@ class PersonListAdapter(val list: List<Person>) : RecyclerView.Adapter<PersonLis
         holder.bind(person, this.clickListener)
     }
 
-    inner class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PersonViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         fun bind(item: Person, clicklistener: (Person) -> Unit) = with(itemView) {
             name.text = item.name
             phone.text = item.phone

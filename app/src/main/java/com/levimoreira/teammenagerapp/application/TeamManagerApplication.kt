@@ -2,7 +2,7 @@ package com.levimoreira.teammenagerapp.application
 
 import android.app.Activity
 import android.app.Application
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.levimoreira.teammenagerapp.application.di.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -19,7 +19,7 @@ class TeamManagerApplication : Application(), HasSupportFragmentInjector {
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     @Inject
-    lateinit var supportFragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var supportFragmentDispatchingAndroidInjector: DispatchingAndroidInjector<androidx.fragment.app.Fragment>
 
     private fun initDagger() {
         DaggerApplicationComponent
@@ -33,7 +33,7 @@ class TeamManagerApplication : Application(), HasSupportFragmentInjector {
         return activityDispatchingAndroidInjector
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+    override fun supportFragmentInjector(): AndroidInjector<androidx.fragment.app.Fragment> {
         return supportFragmentDispatchingAndroidInjector
     }
 }

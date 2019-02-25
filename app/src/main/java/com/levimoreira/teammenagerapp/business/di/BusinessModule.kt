@@ -1,6 +1,6 @@
 package com.levimoreira.teammenagerapp.business.di
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.levimoreira.teammenagerapp.application.di.ViewModelKey
 import com.levimoreira.teammenagerapp.business.viewmodel.BusinessItemViewModel
 import com.levimoreira.teammenagerapp.business.viewmodel.BusinessListViewModel

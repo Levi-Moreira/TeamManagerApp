@@ -1,6 +1,6 @@
 package com.levimoreira.teammenagerapp.organization.di
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.levimoreira.teammenagerapp.application.di.ViewModelKey
 import com.levimoreira.teammenagerapp.organization.viewmodel.OrganizationItemViewModel
 import com.levimoreira.teammenagerapp.organization.viewmodel.OrganizationListViewModel

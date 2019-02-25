@@ -1,18 +1,19 @@
 package com.levimoreira.teammenagerapp.person.view
 
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.levimoreira.teammenagerapp.R
 import com.levimoreira.teammenagerapp.application.entities.Person
@@ -54,7 +55,8 @@ class PersonListFragment : DaggerFragment(), LifecycleOwner {
             Toast.makeText(this.context, person.name, Toast.LENGTH_SHORT).show()
         }
 
-        personRecyclerView.layoutManager = LinearLayoutManager(this.context)
+        personRecyclerView.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(this.context)
         personRecyclerView.adapter = adapter
 
 
@@ -62,6 +64,8 @@ class PersonListFragment : DaggerFragment(), LifecycleOwner {
             it.findNavController().navigate(R.id.action_personListFragment_to_personAddFragment)
             it.visibility = View.INVISIBLE
         }
+
+        addPerson.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_personListFragment_to_personAddFragment, null))
         viewModel.getAllPersons().observe(this, Observer {
             it?.let {
                 personList.clear()
@@ -71,8 +75,10 @@ class PersonListFragment : DaggerFragment(), LifecycleOwner {
         })
     }
 
+
     companion object {
         val TAG = "PersonListFragment"
+
     }
 
 }

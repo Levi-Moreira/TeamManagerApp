@@ -1,8 +1,8 @@
 package com.levimoreira.teammenagerapp.person.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.LiveDataReactiveStreams
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+import androidx.lifecycle.ViewModel
 import com.levimoreira.teammenagerapp.application.entities.Person
 import com.levimoreira.teammenagerapp.person.data.PersonRepository
 import io.reactivex.android.schedulers.AndroidSchedulers

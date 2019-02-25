@@ -1,6 +1,6 @@
 package com.levimoreira.teammenagerapp.person.di
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.levimoreira.teammenagerapp.application.di.ViewModelKey
 import com.levimoreira.teammenagerapp.person.viewmodel.PersonItemViewModel
 import com.levimoreira.teammenagerapp.person.viewmodel.PersonListViewModel
