@@ -1,25 +1,26 @@
 package com.levimoreira.teammenagerapp.task
 
-
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
+import androidx.fragment.app.Fragment
 import android.view.View
-import android.view.ViewGroup
 import com.levimoreira.teammenagerapp.R
-
+import com.levimoreira.teammenagerapp.databinding.FragmentTasksBinding
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class TasksFragment : Fragment() {
-    val TAG = "TasksFragment"
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tasks, container, false)
+class TasksFragment : Fragment(R.layout.fragment_tasks) {
+    private var _binding: FragmentTasksBinding? = null
+    private val binding get() = _binding
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentTasksBinding.bind(view)
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

@@ -1,22 +1,21 @@
 package com.levimoreira.teammenagerapp.organization.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.LiveDataReactiveStreams
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.levimoreira.teammenagerapp.application.entities.Organization
 import com.levimoreira.teammenagerapp.organization.data.OrganizationRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class OrganizationItemViewModel @Inject constructor(var organizationRepository: OrganizationRepository) : ViewModel() {
-    fun createOrganization(organization: Organization): LiveData<Long> {
-        val result = organizationRepository
-                .insertOrganization(organization)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toFlowable()
+@HiltViewModel
+class OrganizationItemViewModel @Inject constructor(private var organizationRepository: OrganizationRepository) : ViewModel() {
 
-        return LiveDataReactiveStreams.fromPublisher(result)
+    fun getOrganization(organizationId: Long): LiveData<Organization> = organizationRepository.getSingleOrganization(organizationId).asLiveData()
+
+    fun createOrganization(organization: Organization) = viewModelScope.launch {
+        organizationRepository.insertOrganization(organization)
     }
 }

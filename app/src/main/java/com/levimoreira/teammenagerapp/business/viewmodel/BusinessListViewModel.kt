@@ -1,22 +1,16 @@
 package com.levimoreira.teammenagerapp.business.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.LiveDataReactiveStreams
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.levimoreira.teammenagerapp.application.entities.Business
 import com.levimoreira.teammenagerapp.business.data.BusinessRepository
-import com.levimoreira.teammenagerapp.organization.data.OrganizationRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class BusinessListViewModel @Inject constructor(var businessRepository: BusinessRepository) : ViewModel() {
-    fun getAllBusiness(): LiveData<List<Business>> {
-        val result = businessRepository
-                .getBusinessList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toFlowable()
-        return LiveDataReactiveStreams.fromPublisher(result)
-    }
+@HiltViewModel
+class BusinessListViewModel @Inject constructor(private var businessRepository: BusinessRepository) : ViewModel() {
+
+    private var _allBusinesses = businessRepository.getBusinessList()
+    val allBusinesses:LiveData<List<Business>> = _allBusinesses.asLiveData()
 }

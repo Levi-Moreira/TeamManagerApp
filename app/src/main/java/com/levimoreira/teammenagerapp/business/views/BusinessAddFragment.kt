@@ -1,16 +1,12 @@
 package com.levimoreira.teammenagerapp.business.views
 
-
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 
 import com.levimoreira.teammenagerapp.R
@@ -20,43 +16,43 @@ import com.levimoreira.teammenagerapp.application.entities.Person
 import com.levimoreira.teammenagerapp.business.adapters.OrganizationSpinnerAdapter
 import com.levimoreira.teammenagerapp.business.adapters.PersonSpinnerAdapter
 import com.levimoreira.teammenagerapp.business.viewmodel.BusinessItemViewModel
+import com.levimoreira.teammenagerapp.databinding.FragmentBusinessAddBinding
+import com.levimoreira.teammenagerapp.databinding.FragmentBusinessBinding
 import com.levimoreira.teammenagerapp.organization.viewmodel.OrganizationListViewModel
 import com.levimoreira.teammenagerapp.person.viewmodel.PersonListViewModel
-import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_business_add.*
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class BusinessAddFragment : DaggerFragment(), LifecycleOwner {
+@AndroidEntryPoint
+class BusinessAddFragment : Fragment(R.layout.fragment_business_add), View.OnClickListener {
+    private var _binding: FragmentBusinessAddBinding? = null
+    private val binding get() = _binding!!
 
+    //  ViewModels
+    private val businessItemViewModel: BusinessItemViewModel by viewModels()
+     private val organizationListViewModel: OrganizationListViewModel by viewModels()
+     private val personListViewModel: PersonListViewModel by viewModels()
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    lateinit var organizationViewModel: OrganizationListViewModel
-    lateinit var organizationSpinnerAdapter: OrganizationSpinnerAdapter
-
-    lateinit var personSpinnerAdapter: PersonSpinnerAdapter
-    lateinit var personViewModel: PersonListViewModel
-
-    lateinit var businessViewModel: BusinessItemViewModel
+    //  Adapters
+    private lateinit var organizationSpinnerAdapter: OrganizationSpinnerAdapter
+    private lateinit var personSpinnerAdapter: PersonSpinnerAdapter
 
     var organizationList = mutableListOf<Organization>()
     var personList = mutableListOf<Person>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        organizationViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizationListViewModel::class.java)
-        organizationSpinnerAdapter = OrganizationSpinnerAdapter(this.context, organizationList)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        personSpinnerAdapter = PersonSpinnerAdapter(this.context, personList)
-        personViewModel = ViewModelProviders.of(this, viewModelFactory).get(PersonListViewModel::class.java)
+        subscribeToObservers()
 
-        businessViewModel = ViewModelProviders.of(this, viewModelFactory).get(BusinessItemViewModel::class.java)
+        organizationSpinnerAdapter = OrganizationSpinnerAdapter(requireContext(), organizationList)
 
+        personSpinnerAdapter = PersonSpinnerAdapter(requireContext(), personList)
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_business_add, container, false)
@@ -64,45 +60,55 @@ class BusinessAddFragment : DaggerFragment(), LifecycleOwner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        organizationSpinner.adapter = organizationSpinnerAdapter
-        personSpinner.adapter = personSpinnerAdapter
+        _binding = FragmentBusinessAddBinding.bind(view)
 
-        organizationViewModel.getAllOrganizations().observe(this, Observer {
+        binding.organizationSpinner.adapter = organizationSpinnerAdapter
+        binding.personSpinner.adapter = personSpinnerAdapter
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.createBusinessButton -> {
+                createBusiness()
+            }
+        }
+    }
+
+    private fun createBusiness() {
+        binding.apply {
+            val business = Business(
+                id = null,
+                title = inputTitle.text.toString(),
+                description = inputDescription.text.toString(),
+                organizationId = organizationSpinner.selectedItemId,
+                personId = personSpinner.selectedItemId,
+                value = inputValue.text.toString(),
+                deadline = inputDeadline.text.toString(),
+                state = inputState.text.toString()
+            )
+            businessItemViewModel.createBusiness(business)
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun subscribeToObservers() {
+        organizationListViewModel.organizations.observe(viewLifecycleOwner, Observer {
             it?.let {
                 organizationList.addAll(it)
                 organizationSpinnerAdapter.notifyDataSetChanged()
             }
         })
 
-        personViewModel.getAllPersons().observe(this, Observer {
+        personListViewModel.allPersons.observe(viewLifecycleOwner, Observer {
             it?.let {
                 personList.addAll(it)
                 personSpinnerAdapter.notifyDataSetChanged()
             }
         })
-
-        createBusinessButton.setOnClickListener {
-            val business = Business(id = null,
-                    title = inputTitle.text.toString(),
-                    description = inputDescription.text.toString(),
-                    organizationId = organizationSpinner.selectedItemId,
-                    personId = personSpinner.selectedItemId,
-                    value = inputValue.text.toString(),
-                    deadline = inputDeadline.text.toString(),
-                    state = inputState.text.toString()
-            )
-
-            businessViewModel.createBusiness(business).observe(this, Observer {
-                this.view?.let { view ->
-                    Snackbar.make(view, R.string.business_created, Snackbar.LENGTH_SHORT).show()
-                }
-                findNavController().popBackStack()
-            })
-        }
     }
 
-    companion object {
-        val TAG = "BusinessAddFragment"
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
-
 }

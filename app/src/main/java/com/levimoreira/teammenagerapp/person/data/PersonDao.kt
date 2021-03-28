@@ -1,25 +1,23 @@
 package com.levimoreira.teammenagerapp.person.data
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy.REPLACE
-import android.arch.persistence.room.Query
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
 import com.levimoreira.teammenagerapp.application.entities.Person
-import io.reactivex.Maybe
-import io.reactivex.Single
-
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PersonDao {
-    @Query("SELECT * from " + Person.TABLE_NAME)
-    fun getAll(): Single<List<Person>>
+    @Query("SELECT * from person")
+    fun getAll(): Flow<List<Person>>
 
     @Insert(onConflict = REPLACE)
-    fun insert(person: Person): Long
+    suspend fun insert(person: Person): Long
 
-    @Query("SELECT * FROM " + Person.TABLE_NAME + " WHERE id = :personId")
-    fun getPersonById(personId: Long): Maybe<Person>
+    @Query("SELECT * FROM person WHERE id = :personId")
+    fun getPersonById(personId: Long): Flow<Person>
 
-    @Query("DELETE FROM " + Person.TABLE_NAME + " WHERE id = :personId")
-    fun deleteById(personId: Long): Int
+    @Query("DELETE FROM person WHERE id = :personId")
+    suspend fun deleteById(personId: Long): Int
 }

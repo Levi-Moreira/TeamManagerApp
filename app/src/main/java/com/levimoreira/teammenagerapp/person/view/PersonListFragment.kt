@@ -1,68 +1,48 @@
 package com.levimoreira.teammenagerapp.person.view
 
-
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.levimoreira.teammenagerapp.R
 import com.levimoreira.teammenagerapp.application.entities.Person
-import com.levimoreira.teammenagerapp.main.OnActivityCallback
+import com.levimoreira.teammenagerapp.databinding.FragmentPeopleBinding
 import com.levimoreira.teammenagerapp.person.adapters.PersonListAdapter
 import com.levimoreira.teammenagerapp.person.viewmodel.PersonListViewModel
-import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_people.*
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class PersonListFragment : DaggerFragment(), LifecycleOwner {
+@AndroidEntryPoint
+class PersonListFragment : Fragment(R.layout.fragment_people) {
+    private var _binding: FragmentPeopleBinding? = null
+    private val binding get() = _binding!!
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    lateinit var viewModel: PersonListViewModel
+    //  Viewmodels
+    private val personListViewModel: PersonListViewModel by viewModels()
 
     lateinit var adapter: PersonListAdapter
 
     var personList = mutableListOf<Person>()
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(PersonListViewModel::class.java)
+        subscribeToObservers()
+
         adapter = PersonListAdapter(personList)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_people, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        adapter.clickListener = { person ->
-            Toast.makeText(this.context, person.name, Toast.LENGTH_SHORT).show()
-        }
-
-        personRecyclerView.layoutManager = LinearLayoutManager(this.context)
-        personRecyclerView.adapter = adapter
-
-
-        addPerson.setOnClickListener {
-            it.findNavController().navigate(R.id.action_personListFragment_to_personAddFragment)
-            it.visibility = View.INVISIBLE
-        }
-        viewModel.getAllPersons().observe(this, Observer {
+    private fun subscribeToObservers() {
+        personListViewModel.allPersons.observe(viewLifecycleOwner, {
             it?.let {
                 personList.clear()
                 personList.addAll(it)
@@ -71,8 +51,28 @@ class PersonListFragment : DaggerFragment(), LifecycleOwner {
         })
     }
 
-    companion object {
-        val TAG = "PersonListFragment"
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentPeopleBinding.bind(view)
+
+        adapter.clickListener = { person ->
+            Toast.makeText(this.context, person.name, Toast.LENGTH_SHORT).show()
+        }
+
+        binding.apply {
+            personRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            personRecyclerView.adapter = adapter
+
+
+            addPerson.setOnClickListener {
+                findNavController().navigate(R.id.action_personListFragment_to_personAddFragment)
+                it.visibility = View.INVISIBLE
+            }
+        }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

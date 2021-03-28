@@ -8,7 +8,7 @@
         android:id="@+id/navigation_home"
         android:name="com.levimoreira.teammenagerapp.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home"></fragment>
+        tools:layout="@layout/fragment_home"/>
     <fragment
         android:id="@+id/organizationAddFragment"
         android:name="com.levimoreira.teammenagerapp.organization.views.OrganizationAddFragment"
@@ -17,7 +17,8 @@
     <fragment
         android:id="@+id/businessAddFragment"
         android:name="com.levimoreira.teammenagerapp.business.views.BusinessAddFragment"
-        android:label="@string/add_business" />
+        android:label="@string/add_business"
+        tools:layout="@layout/fragment_business_add"/>
     <fragment
         android:id="@+id/navigation_organization"
         android:name="com.levimoreira.teammenagerapp.organization.views.OrganizationListFragment"
@@ -33,7 +34,8 @@
     <fragment
         android:id="@+id/navigation_business"
         android:name="com.levimoreira.teammenagerapp.business.views.BusinessListFragment"
-        android:label="@string/title_business">
+        android:label="@string/title_business"
+        tools:layout="@layout/fragment_business">
         <action
             android:id="@+id/action_businessListFragment_to_businessAddFragment"
             app:destination="@id/businessAddFragment"
@@ -44,7 +46,8 @@
     <fragment
         android:id="@+id/navigation_people"
         android:name="com.levimoreira.teammenagerapp.person.view.PersonListFragment"
-        android:label="@string/title_people">
+        android:label="@string/title_people"
+        tools:layout="@layout/person_spinner_list">
         <action
             android:id="@+id/action_personListFragment_to_personAddFragment"
             app:destination="@id/personAddFragment"
@@ -55,7 +58,8 @@
     <fragment
         android:id="@+id/personAddFragment"
         android:name="com.levimoreira.teammenagerapp.person.view.PersonAddFragment"
-        android:label="@string/add_person" />
+        android:label="@string/add_person"
+        tools:layout="@layout/fragment_add_person"/>
     <fragment
         android:id="@+id/navigation_tasks"
         android:name="com.levimoreira.teammenagerapp.task.TasksFragment"

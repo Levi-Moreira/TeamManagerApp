@@ -1,47 +1,41 @@
 package com.levimoreira.teammenagerapp.organization.views
 
-
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.os.ProxyFileDescriptorCallback
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.levimoreira.teammenagerapp.R
 import com.levimoreira.teammenagerapp.application.entities.Organization
-import com.levimoreira.teammenagerapp.main.OnActivityCallback
+import com.levimoreira.teammenagerapp.databinding.FragmentOrganizationBinding
 import com.levimoreira.teammenagerapp.organization.adapters.OrganizationListAdapter
 import com.levimoreira.teammenagerapp.organization.viewmodel.OrganizationListViewModel
-import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_organization.*
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class OrganizationListFragment : DaggerFragment(), LifecycleOwner {
+@AndroidEntryPoint
+class OrganizationListFragment : Fragment(R.layout.fragment_organization) {
+    private var _binding: FragmentOrganizationBinding? = null
+    private val binding get() = _binding!!
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    //  ViewModels
+    private val organizationListViewModel: OrganizationListViewModel by viewModels()
 
-    lateinit var viewModel: OrganizationListViewModel
-
-    lateinit var adapter: OrganizationListAdapter
+    private lateinit var adapter: OrganizationListAdapter
 
     var organizationList = mutableListOf<Organization>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizationListViewModel::class.java)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        subscribeToObserver()
+
         adapter = OrganizationListAdapter(organizationList)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_organization, container, false)
@@ -49,19 +43,24 @@ class OrganizationListFragment : DaggerFragment(), LifecycleOwner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentOrganizationBinding.bind(view)
 
         adapter.clickListener = { person ->
-            Toast.makeText(this.context, person.name, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), person.name, Toast.LENGTH_SHORT).show()
         }
 
-        organizationRecyclerView.layoutManager = LinearLayoutManager(this.context)
-        organizationRecyclerView.adapter = adapter
+        binding.apply {
+            organizationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            organizationRecyclerView.adapter = adapter
 
-        addOrganization.setOnClickListener {
-            it.findNavController().navigate(R.id.action_organizationListFragment_to_organizationAddFragment)
+            addOrganization.setOnClickListener {
+                findNavController().navigate(R.id.action_organizationListFragment_to_organizationAddFragment)
+            }
         }
+    }
 
-        viewModel.getAllOrganizations().observe(this, Observer {
+    private fun subscribeToObserver() {
+        organizationListViewModel.organizations.observe(viewLifecycleOwner, Observer {
             it?.let {
                 organizationList.clear()
                 organizationList.addAll(it)
@@ -70,8 +69,8 @@ class OrganizationListFragment : DaggerFragment(), LifecycleOwner {
         })
     }
 
-    companion object {
-        val TAG = "OrganizationListFragment"
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
-
 }

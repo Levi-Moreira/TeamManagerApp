@@ -1,25 +1,17 @@
 package com.levimoreira.teammenagerapp.person.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.LiveDataReactiveStreams
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.levimoreira.teammenagerapp.application.entities.Person
 import com.levimoreira.teammenagerapp.person.data.PersonRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PersonItemViewModel @Inject constructor(var personRepository: PersonRepository) : ViewModel() {
+@HiltViewModel
+class PersonItemViewModel @Inject constructor(private var personRepository: PersonRepository) : ViewModel() {
 
-    fun createPerson(person: Person): LiveData<Long> {
-        val result = personRepository
-                .insertPerson(person)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toFlowable()
-
-        return LiveDataReactiveStreams.fromPublisher(result)
+    fun createPerson(person: Person) = viewModelScope.launch {
+        personRepository.insertPerson(person)
     }
-
-
 }

@@ -1,30 +1,24 @@
 package com.levimoreira.teammenagerapp.organization.data
 
 import com.levimoreira.teammenagerapp.application.entities.Organization
-import io.reactivex.Maybe
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class OrganizationRepository @Inject constructor(private var dao: OrganizationDao) {
-    fun getOrganizationList(): Single<List<Organization>> {
+
+    fun getOrganizationList(): Flow<List<Organization>> {
         return dao.getAll()
     }
 
-    fun getSingleOrganization(id: Long): Maybe<Organization> {
+    fun getSingleOrganization(id: Long): Flow<Organization> {
         return dao.getOrganizationById(id)
     }
 
-    fun insertOrganization(org: Organization): Single<Long> {
-        return Single.fromCallable {
-            dao.insert(org)
-        }
+    suspend fun insertOrganization(org: Organization): Long {
+        return dao.insert(org)
     }
 
-    fun deleteOrganization(id: Long): Single<Int> {
-        return Single.fromCallable {
-            dao.deleteById(id)
-        }
+    suspend fun deleteOrganization(id: Long): Int {
+        return dao.deleteById(id)
     }
-
-
 }

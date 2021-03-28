@@ -1,68 +1,66 @@
 package com.levimoreira.teammenagerapp.business.views
 
-
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.levimoreira.teammenagerapp.R
 import com.levimoreira.teammenagerapp.application.entities.Business
 import com.levimoreira.teammenagerapp.business.adapters.BusinessListAdapter
 import com.levimoreira.teammenagerapp.business.viewmodel.BusinessListViewModel
-import com.levimoreira.teammenagerapp.main.OnActivityCallback
-import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_business.*
-import javax.inject.Inject
+import com.levimoreira.teammenagerapp.databinding.FragmentBusinessBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass.
  *
  */
+@AndroidEntryPoint
+class BusinessListFragment : Fragment(R.layout.fragment_business) {
+    private var _binding: FragmentBusinessBinding? = null
+    private val binding get() = _binding!!
 
-class BusinessListFragment : DaggerFragment(), LifecycleOwner {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    lateinit var viewModel: BusinessListViewModel
+    //  ViewModel
+    val businessListViewModel: BusinessListViewModel by viewModels()
 
     lateinit var adapter: BusinessListAdapter
 
-
     var businessList = mutableListOf<Business>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(BusinessListViewModel::class.java)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        subscribeToObservers()
+
         adapter = BusinessListAdapter(businessList)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_business, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentBusinessBinding.bind(view)
 
         adapter.clickListener = { business ->
-            Toast.makeText(this.context, business.title, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), business.title, Toast.LENGTH_SHORT).show()
         }
 
-        businessRecyclerView.layoutManager = LinearLayoutManager(this.context)
-        businessRecyclerView.adapter = adapter
+        binding.apply {
+            businessRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            businessRecyclerView.adapter = adapter
 
-        addBusiness.setOnClickListener {
-            it.findNavController().navigate(R.id.action_businessListFragment_to_businessAddFragment)
+            addBusiness.setOnClickListener {
+                findNavController().navigate(R.id.action_businessListFragment_to_businessAddFragment)
+            }
         }
+    }
 
-        viewModel.getAllBusiness().observe(this, Observer {
+    private fun subscribeToObservers() {
+        businessListViewModel.allBusinesses.observe(viewLifecycleOwner, {
             it?.let {
                 businessList.clear()
                 businessList.addAll(it)
@@ -71,8 +69,8 @@ class BusinessListFragment : DaggerFragment(), LifecycleOwner {
         })
     }
 
-    companion object {
-        val TAG = "BusinessListFragment"
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
-
 }

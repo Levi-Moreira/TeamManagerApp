@@ -1,67 +1,56 @@
 package com.levimoreira.teammenagerapp.organization.views
 
-
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.util.Log
-import android.view.LayoutInflater
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.levimoreira.teammenagerapp.R
 import com.levimoreira.teammenagerapp.application.entities.Organization
-import com.levimoreira.teammenagerapp.business.viewmodel.BusinessItemViewModel
+import com.levimoreira.teammenagerapp.databinding.FragmentAddOrganizationBinding
 import com.levimoreira.teammenagerapp.organization.viewmodel.OrganizationItemViewModel
-import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_add_organization.*
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class OrganizationAddFragment : DaggerFragment(), LifecycleOwner {
-    val TAG = "OrganizationAddFragment"
+@AndroidEntryPoint
+class OrganizationAddFragment : Fragment(R.layout.fragment_add_organization), View.OnClickListener {
+    private var _binding: FragmentAddOrganizationBinding? = null
+    private val binding get() = _binding!!
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    lateinit var viewModel: OrganizationItemViewModel
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizationItemViewModel::class.java)
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_organization, container, false)
-    }
+    //  ViewModels
+    private val organizationItemViewModel: OrganizationItemViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAddOrganizationBinding.bind(view)
 
-        createOrganizationButton.setOnClickListener {
-            val organization = Organization(id = null,
-                    name = inputName.text.toString(),
-                    phone = inputPhone.text.toString(),
-                    address = inputAddress.text.toString())
+        binding.createOrganizationButton.setOnClickListener(this)
+    }
 
-            viewModel.createOrganization(organization).observe(this, Observer {
-                this.view?.let { view ->
-                    Snackbar.make(view, R.string.organization_created, Snackbar.LENGTH_SHORT).show()
-                }
-                findNavController().popBackStack()
-            })
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.createOrganizationButton -> {
+                createOrganization()
+            }
         }
     }
 
-    companion object {
-        val TAG = "OrganizationAddFragment"
+    private fun createOrganization() {
+        binding.apply {
+            val organization = Organization(
+                id = null,
+                name = inputName.text.toString(),
+                phone = inputPhone.text.toString(),
+                address = inputAddress.text.toString()
+            )
+            organizationItemViewModel.createOrganization(organization)
+            Snackbar.make(binding.root, R.string.organization_created, Snackbar.LENGTH_SHORT).show()
+        }
+        findNavController().popBackStack()
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

@@ -1,17 +1,18 @@
 package com.levimoreira.teammenagerapp.organization.adapters
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
+import android.view.LayoutInflater
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
-import com.levimoreira.teammenagerapp.R
 import com.levimoreira.teammenagerapp.application.entities.Organization
-import com.levimoreira.teammenagerapp.inflate
-import kotlinx.android.synthetic.main.organization_item_view.view.*
+import com.levimoreira.teammenagerapp.databinding.OrganizationItemViewBinding
 
 class OrganizationListAdapter(private val list: List<Organization>) : RecyclerView.Adapter<OrganizationListAdapter.OrganizationViewHolder>() {
     lateinit var clickListener: (Organization) -> (Unit)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrganizationViewHolder = OrganizationViewHolder(parent.inflate(R.layout.organization_item_view))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrganizationViewHolder {
+        val binding = OrganizationItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return OrganizationViewHolder(binding)
+    }
 
     override fun getItemCount(): Int = list.size
 
@@ -20,13 +21,15 @@ class OrganizationListAdapter(private val list: List<Organization>) : RecyclerVi
         holder.bind(organization, this.clickListener)
     }
 
+    inner class OrganizationViewHolder(private val binding: OrganizationItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    inner class OrganizationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: Organization, clicklistener: (Organization) -> Unit) = with(itemView) {
-            name.text = item.name
-            phone.text = item.phone
-            address.text = item.address
-            setOnClickListener { clicklistener(item) }
+        fun bind(item: Organization, clicklistener: (Organization) -> Unit) = with(binding.root) {
+            binding.apply {
+                name.text = item.name
+                phone.text = item.phone
+                address.text = item.address
+                setOnClickListener { clicklistener(item) }
+            }
         }
     }
 }

@@ -1,67 +1,56 @@
 package com.levimoreira.teammenagerapp.person.view
 
-
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.util.Log
-import android.view.LayoutInflater
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
 import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.Navigation.findNavController
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.levimoreira.teammenagerapp.R
 import com.levimoreira.teammenagerapp.application.entities.Person
+import com.levimoreira.teammenagerapp.databinding.FragmentAddPersonBinding
 import com.levimoreira.teammenagerapp.person.viewmodel.PersonItemViewModel
-import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_add_person.*
-import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class PersonAddFragment : DaggerFragment(), LifecycleOwner {
-    val TAG = "OrganizationAddFragment"
+class PersonAddFragment : Fragment(R.layout.fragment_add_person), View.OnClickListener {
+    private var _binding: FragmentAddPersonBinding? = null
+    private val binding get() = _binding!!
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    lateinit var viewModel: PersonItemViewModel
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(PersonItemViewModel::class.java)
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_person, container, false)
-    }
+    //  ViewModels
+    private val personItemViewModel: PersonItemViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAddPersonBinding.bind(view)
+    }
 
-        createPersonButton.setOnClickListener {
-            val person = Person(id = null,
-                    name = inputName.text.toString(),
-                    phone = inputPhone.text.toString(),
-                    email = inputEmail.text.toString())
-
-            viewModel.createPerson(person).observe(this, Observer {
-                this.view?.let { view ->
-                    Snackbar.make(view, R.string.person_created, Snackbar.LENGTH_SHORT).show()
-                }
-                findNavController().popBackStack()
-            })
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.createPersonButton -> {
+                createPerson()
+            }
         }
     }
 
-    companion object {
-        val TAG = "OrganizationAddFragment"
+    private fun createPerson() {
+        binding.apply {
+            val person = Person(
+                id = null,
+                name = inputName.text.toString(),
+                phone = inputPhone.text.toString(),
+                email = inputEmail.text.toString()
+            )
+            personItemViewModel.createPerson(person)
+            Snackbar.make(requireView(), R.string.person_created, Snackbar.LENGTH_SHORT).show()
+        }
+        findNavController().popBackStack()
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

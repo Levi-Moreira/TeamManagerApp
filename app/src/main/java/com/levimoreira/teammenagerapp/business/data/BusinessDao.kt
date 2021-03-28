@@ -1,25 +1,26 @@
 package com.levimoreira.teammenagerapp.business.data
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.levimoreira.teammenagerapp.application.entities.Business
 import com.levimoreira.teammenagerapp.application.entities.Organization
 import io.reactivex.Maybe
 import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BusinessDao {
     @Query("SELECT * from " + Business.TABLE_NAME)
-    fun getAll(): Single<List<Business>>
+    fun getAll(): Flow<List<Business>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(business: Business): Long
+    suspend fun insert(business: Business): Long
 
     @Query("SELECT * FROM " + Business.TABLE_NAME + " WHERE id = :businessId")
-    fun getOrganizationById(businessId: Long): Maybe<Business>
+    fun getBusinessById(businessId: Long): Flow<Business>
 
     @Query("DELETE FROM " + Business.TABLE_NAME + " WHERE id = :businessId")
-    fun deleteById(businessId: Long): Int
+    suspend fun deleteById(businessId: Long): Int
 }
