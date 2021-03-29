@@ -31,6 +31,4 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return Navigation.findNavController(this, R.id.my_nav_host_fragment).navigateUp()
     }
-
-    // TODO: 2021/03/28 Translate the app to English
 }
