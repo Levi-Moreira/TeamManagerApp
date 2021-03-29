@@ -6,7 +6,6 @@
     <!--Main Activity-->
     <string name="title_home">Home</string>
     <string name="title_people">Pessoas</string>
-    <string name="title_organization">Organizações</string>
     <string name="title_tasks">Tarefas</string>
     <string name="title_business">Negócios</string>
 
@@ -27,4 +26,5 @@
     <string name="person_created">Pessoa criada com sucesso</string>
     <string name="organization_created">Organização Criada</string>
     <string name="business_created">Negócio Criado</string>
+    <string name="title_organization">Organizações</string>
 </resources>

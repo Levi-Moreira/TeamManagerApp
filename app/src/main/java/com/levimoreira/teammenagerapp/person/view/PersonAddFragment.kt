@@ -10,11 +10,13 @@ import com.levimoreira.teammenagerapp.R
 import com.levimoreira.teammenagerapp.application.entities.Person
 import com.levimoreira.teammenagerapp.databinding.FragmentAddPersonBinding
 import com.levimoreira.teammenagerapp.person.viewmodel.PersonItemViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass.
  *
  */
+@AndroidEntryPoint
 class PersonAddFragment : Fragment(R.layout.fragment_add_person), View.OnClickListener {
     private var _binding: FragmentAddPersonBinding? = null
     private val binding get() = _binding!!
@@ -25,6 +27,8 @@ class PersonAddFragment : Fragment(R.layout.fragment_add_person), View.OnClickLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddPersonBinding.bind(view)
+
+        binding.createPersonButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {

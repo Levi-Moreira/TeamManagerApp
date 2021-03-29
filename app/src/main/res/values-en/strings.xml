@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Team Menager App</string>
+    <string name="title_home">Home</string>
+    <string name="title_people">People</string>
+    <string name="title_organization">Organizations</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="title_business">Business</string>
+    <string name="text_hint_name">Name</string>
+    <string name="text_hint_email">Email</string>
+    <string name="text_hint_phone">Telephone</string>
+    <string name="add_person">Add person</string>
+    <string name="hello_blank_fragment">placeholder</string>
+    <string name="add_organization">Add Organization</string>
+    <string name="text_hint_address">Address</string>
+    <string name="text_hint_title">Qualification</string>
+    <string name="text_hint_description">Description</string>
+    <string name="text_hint_value">Value</string>
+    <string name="text_hint_deadline">Deadline</string>
+    <string name="text_hint_state">State</string>
+    <string name="add_business">Add Business</string>
+    <string name="person_created">Successfully created person</string>
+    <string name="organization_created">Organization Created</string>
+    <string name="business_created">Created Business</string>
+</resources>

@@ -38,7 +38,7 @@ class OrganizationAddFragment : Fragment(R.layout.fragment_add_organization), Vi
     private fun createOrganization() {
         binding.apply {
             val organization = Organization(
-                id = null,
+                id = 0,
                 name = inputName.text.toString(),
                 phone = inputPhone.text.toString(),
                 address = inputAddress.text.toString()

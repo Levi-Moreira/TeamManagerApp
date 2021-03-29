@@ -33,8 +33,8 @@ class BusinessAddFragment : Fragment(R.layout.fragment_business_add), View.OnCli
 
     //  ViewModels
     private val businessItemViewModel: BusinessItemViewModel by viewModels()
-     private val organizationListViewModel: OrganizationListViewModel by viewModels()
-     private val personListViewModel: PersonListViewModel by viewModels()
+    private val organizationListViewModel: OrganizationListViewModel by viewModels()
+    private val personListViewModel: PersonListViewModel by viewModels()
 
     //  Adapters
     private lateinit var organizationSpinnerAdapter: OrganizationSpinnerAdapter
@@ -62,8 +62,11 @@ class BusinessAddFragment : Fragment(R.layout.fragment_business_add), View.OnCli
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentBusinessAddBinding.bind(view)
 
-        binding.organizationSpinner.adapter = organizationSpinnerAdapter
-        binding.personSpinner.adapter = personSpinnerAdapter
+        binding.apply {
+            organizationSpinner.adapter = organizationSpinnerAdapter
+            personSpinner.adapter = personSpinnerAdapter
+            createBusinessButton.setOnClickListener(this@BusinessAddFragment)
+        }
     }
 
     override fun onClick(v: View) {
